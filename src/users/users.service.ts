@@ -31,7 +31,7 @@ export class UserService {
         rowId: result.lastInsertRowid,
       };
     } catch (err) {
-      console.log('Exception caught');
+      console.log(err);
       return {
         response: 'unable to add',
       };
