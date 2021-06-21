@@ -16,7 +16,7 @@ export class UserService {
     createTable.run();
   }
 
-  insert(user: User) {
+  insert(user: User): User {
     const userObj = {
       id: null,
       name: user.name,
@@ -25,43 +25,22 @@ export class UserService {
     const insertQuery = this.db.prepare(
       `INSERT INTO user VALUES ($id, $name,$email)`,
     );
-    try {
-      const result = insertQuery.run(userObj);
-      return {
-        rowId: result.lastInsertRowid,
-      };
-    } catch (err) {
-      console.log(err);
-      return {
-        response: 'unable to add',
-      };
-    }
+
+    const result = insertQuery.run(userObj);
+    // user.id = result.lastInsertRowid;
+    return {
+      ...user,
+      id: parseInt(result.lastInsertRowid.toString()),
+    };
   }
 
-  fetch(id: number) {
+  fetch(id: number): User {
     const getByQuery = this.db.prepare(`SELECT * FROM USER WHERE id = ?`);
-    try {
-      return getByQuery.all(id);
-    } catch (err) {
-      console.log('Exception caught');
-      return {
-        response: 'unable to fetch',
-      };
-    }
+    return getByQuery.get(id) as User;
   }
 
-  fetchAll() {
+  fetchAll(): User[] {
     const getAllQuery = this.db.prepare(`SELECT * FROM user`);
-    try {
-      const rs = getAllQuery.all();
-      return {
-        result: rs,
-      };
-    } catch (err) {
-      console.log('Exception caught');
-      return {
-        response: 'unable to fetch',
-      };
-    }
+    return getAllQuery.all() as User[];
   }
 }

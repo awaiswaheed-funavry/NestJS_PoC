@@ -6,14 +6,14 @@ import { Controller, Post, Body, Get, Param, Inject } from '@nestjs/common';
 export class UserController {
   constructor(private userService: UserService) {}
   @Post()
-  addUser(@Body('name') name: string, @Body('email') email: string): any {
+  addUser(@Body('name') name: string, @Body('email') email: string): User {
     this.print('Add User API Called');
     const user: User = new User(null, name, email);
     return this.userService.insert(user);
   }
 
   @Get('/:id')
-  getUser(@Param('id') id): any {
+  getUser(@Param('id') id): User {
     this.print('Get User API Called');
     return this.userService.fetch(id);
   }
