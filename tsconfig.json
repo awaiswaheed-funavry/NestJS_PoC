@@ -11,5 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
-  }
+  },
+  "exclude": [
+    "./plugins/**/*",
+    "./typings/**/*",
+    "./dist" // This is what fixed it!
+]
 }
